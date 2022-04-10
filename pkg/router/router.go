@@ -6,11 +6,13 @@ import (
 )
 
 func Router() *gin.Engine {
-	r := gin.Default()
-	r.SetTrustedProxies([]string{"0.0.0.0"})
-
-	r.GET("/", controller.Welcome)
-	r.POST("/url-shortner", controller.UrlShortner)
-	r.NoRoute(controller.Default)
-	return r
+	router := gin.Default()
+	err := router.SetTrustedProxies([]string{"0.0.0.0"})
+	if err != nil {
+		panic(err)
+	}
+	router.POST("/shorturl", controller.UrlShortener)
+	router.GET("/", controller.VisitShortURL)
+	router.NoRoute(controller.Default)
+	return router
 }
